@@ -1,3 +1,9 @@
 def study_schedule(permanence_period, target_time):
-    """Faça o código aqui."""
-    raise NotImplementedError
+    count = 0
+    try:
+        for join, left in permanence_period:
+            if join <= target_time <= left:
+                count += 1
+        return count
+    except (ValueError, TypeError):
+        return None
