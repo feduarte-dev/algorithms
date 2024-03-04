@@ -1,29 +1,50 @@
-def bubble_sort(string):
-    n = len(string)
-    for i in range(n - 1):
-        for j in range(0, n - i - 1):
-            if string[j].lower() > string[j + 1].lower():
-                string[j], string[j + 1] = string[j + 1], string[j]
+def merge_sort(string):
+    if len(string) > 1:
+        mid = len(string) // 2
+        left = string[:mid]
+        right = string[mid:]
+
+        merge_sort(left)
+        merge_sort(right)
+
+        merge(string, left, right)
+
+
+def merge(string, left, right):
+    left_index = right_index = general_index = 0
+
+    while left_index < len(left) and right_index < len(right):
+        if left[left_index] <= right[right_index]:
+            string[general_index] = left[left_index]
+            left_index += 1
+        else:
+            string[general_index] = right[right_index]
+            right_index += 1
+        general_index += 1
+
+    while left_index < len(left):
+        string[general_index] = left[left_index]
+        left_index += 1
+        general_index += 1
+
+    while right_index < len(right):
+        string[general_index] = right[right_index]
+        right_index += 1
+        general_index += 1
 
 
 def is_anagram(first_string, second_string):
-    first_sorted = list(first_string)
-    second_sorted = list(second_string)
+    sorted_first = list(first_string.lower())
+    sorted_second = list(second_string.lower())
 
-    bubble_sort(first_sorted)
-    bubble_sort(second_sorted)
+    merge_sort(sorted_first)
+    merge_sort(sorted_second)
 
-    fixed_first = "".join(first_sorted).lower()
-    fixed_second = "".join(second_sorted).lower()
+    fixed_first = "".join(sorted_first)
+    fixed_second = "".join(sorted_second)
 
-    if fixed_first != fixed_second or first_string == "":
-        return (
-            fixed_first,
-            fixed_second,
-            False,
-        )
     return (
         fixed_first,
         fixed_second,
-        True,
+        fixed_first == fixed_second and fixed_first != "",
     )
